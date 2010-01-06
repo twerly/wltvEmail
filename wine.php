@@ -41,8 +41,7 @@ $rss_id = 1;
 
 // Set up the feed and grab the very first (i.e. most recent) episode info
 $episodes = array();
-//if(is_new_episode($rss->channel->item[0]->title)){
-if(true){
+if(is_new_episode($rss->channel->item[0]->title)){
     foreach ($rss->channel->item as $item) {
        if ($rss_id == 1) {
        //Grab the episode number from the rss'd title, y'all
@@ -212,62 +211,62 @@ EOF;
 
 echo $creative;
 
-//$email_content = htmlspecialchars($creative);
-//
-//$postString = "
-//<Creative xmlns=\"http://schemas.datacontract.org/2004/07/BlueSkyFactory.Publicaster7.API.REST.Classes\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">
-//<CreativeID>0</CreativeID>
-//<DateCreated>".date('Y-m-d\TG:i:s')."</DateCreated>
-//<Description></Description>
-//<EncodingID>16</EncodingID>
-//<FolderID>7</FolderID>
-//<HTML>$email_content</HTML>
-//<Name>WLTV " . date('m/j') . "</Name>
-//<Subject>API Test</Subject>
-//<Text>
-//You have received a HTML email from Wine Library TV, but it appears that your e-mail client is set to read messages in plain text.
-//To view the original graphical version of the email in your Internet browser, visit:
-//[~Viewinbrowser~]
-//
-//=======================================================
-//To opt out of all future mailings from Wine Library TV, visit:
-//[~Optout~]
-//
-//To forward this e-mail to a friend/colleague, visit:
-//[~Forward~]
-//=======================================================
-//</Text>
-//<Type>HTML</Type>
-//<UserID>2419</UserID>
-//</Creative>
-//";
-//$response = make_api_call('Creatives.svc', $postString);
-//
-//// Grab the Creative ID for future use
-//if(preg_match('/<a:CreativeID.*a:CreativeID>/', $response, $id))
-//    { $CreativeID = strip_tags($id[0]); }
-//
-//$postString = "
-//<CampaignDistribution xmlns=\"http://schemas.datacontract.org/2004/07/BlueSkyFactory.Publicaster7.API.REST.Classes\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">
-//<CampaignDistributionID>0</CampaignDistributionID>
-//<DistributionSubject>Test</DistributionSubject>
-//<GoogleTitle>Test</GoogleTitle>
-//<IsSegmentation>false</IsSegmentation>
-//<IsSuppression>false</IsSuppression>
-//<IsTest>false</IsTest>
-//<ProcessGoogle>false</ProcessGoogle>
-//<SelectedCampaign>6</SelectedCampaign>
-//<SelectedEmail>$CreativeID</SelectedEmail>
-//<SelectedFromAddress>11</SelectedFromAddress>
-//<SelectedMailingList>20</SelectedMailingList>
-//<SelectedReplyToAddress>11</SelectedReplyToAddress>
-//<SendDate>".date('Y-m-d\TG:i:s')."</SendDate>
-//<TrackLinks>true</TrackLinks>
-//<UserID>2419</UserID>
-//</CampaignDistribution>
-//";
-//$response = make_api_call('CampaignDistributions.svc',$postString);
-//
-//echo "<br />Sent";
+$email_content = htmlspecialchars($creative);
+
+$postString = "
+<Creative xmlns=\"http://schemas.datacontract.org/2004/07/BlueSkyFactory.Publicaster7.API.REST.Classes\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">
+<CreativeID>0</CreativeID>
+<DateCreated>".date('Y-m-d\TG:i:s')."</DateCreated>
+<Description></Description>
+<EncodingID>16</EncodingID>
+<FolderID>7</FolderID>
+<HTML>$email_content</HTML>
+<Name>WLTV " . date('m/j') . "</Name>
+<Subject>API Test</Subject>
+<Text>
+You have received a HTML email from Wine Library TV, but it appears that your e-mail client is set to read messages in plain text.
+To view the original graphical version of the email in your Internet browser, visit:
+[~Viewinbrowser~]
+
+=======================================================
+To opt out of all future mailings from Wine Library TV, visit:
+[~Optout~]
+
+To forward this e-mail to a friend/colleague, visit:
+[~Forward~]
+=======================================================
+</Text>
+<Type>HTML</Type>
+<UserID>2419</UserID>
+</Creative>
+";
+$response = make_api_call('Creatives.svc', $postString);
+
+// Grab the Creative ID for future use
+if(preg_match('/<a:CreativeID.*a:CreativeID>/', $response, $id))
+    { $CreativeID = strip_tags($id[0]); }
+
+$postString = "
+<CampaignDistribution xmlns=\"http://schemas.datacontract.org/2004/07/BlueSkyFactory.Publicaster7.API.REST.Classes\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">
+<CampaignDistributionID>0</CampaignDistributionID>
+<DistributionSubject>Test</DistributionSubject>
+<GoogleTitle>Test</GoogleTitle>
+<IsSegmentation>false</IsSegmentation>
+<IsSuppression>false</IsSuppression>
+<IsTest>false</IsTest>
+<ProcessGoogle>false</ProcessGoogle>
+<SelectedCampaign>6</SelectedCampaign>
+<SelectedEmail>$CreativeID</SelectedEmail>
+<SelectedFromAddress>11</SelectedFromAddress>
+<SelectedMailingList>20</SelectedMailingList>
+<SelectedReplyToAddress>11</SelectedReplyToAddress>
+<SendDate>".date('Y-m-d\TG:i:s')."</SendDate>
+<TrackLinks>true</TrackLinks>
+<UserID>2419</UserID>
+</CampaignDistribution>
+";
+$response = make_api_call('CampaignDistributions.svc',$postString);
+
+echo "<br />Sent";
 } else { echo "Up to date";}
 ?>
