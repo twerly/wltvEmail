@@ -1,4 +1,5 @@
 <?php
+ini_set('display_errors','On');
 $img_path = "http://wltv.vaynermedia.com/images";
 
 function is_new_episode($title){
