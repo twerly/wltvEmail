@@ -44,7 +44,7 @@ $rss_id = 1;
 
 // Set up the feed and grab the very first (i.e. most recent) episode info
 $episodes = array();
-if(is_new_episode($rss->channel->item[0]->title) || true){
+if(is_new_episode($rss->channel->item[0]->title)){
     foreach ($rss->channel->item as $item) {
        if ($rss_id == 1) {
        //Grab the episode number from the rss'd title, y'all
