@@ -34,5 +34,5 @@ $postString = "
 
 
 make_api_call("ListImports.svc",$postString);
-header('Location: /?success=1');
+header('Location: http://tv.winelibrary.com/?success=1');
 ?>

@@ -1,4 +1,6 @@
 <?php
+$img_path = "http://localhost/wltvemail/images";
+
 function is_new_episode($title){
     $db_host = "localhost";
     $db_user = "root";
@@ -41,7 +43,7 @@ $rss_id = 1;
 
 // Set up the feed and grab the very first (i.e. most recent) episode info
 $episodes = array();
-if(is_new_episode($rss->channel->item[0]->title) || true){
+if(is_new_episode($rss->channel->item[0]->title) || 1){
     foreach ($rss->channel->item as $item) {
        if ($rss_id == 1) {
        //Grab the episode number from the rss'd title, y'all
@@ -98,11 +100,12 @@ $creative = <<<EOF
 </head>
 <body style="margin:0; padding:0;">
 <div style="width:100%; background-color:#F6F1DE;">
-    <table style="width:720px; margin:auto; background-color:#F6F1DE; table-layout:auto; font-size:medium;" border="0" cellpadding="0" cellspacing="0" align="center">
-        <tr><td style="text-align:center;" colspan="2">
-            <img alt="Wine Library TV" src="images/header.jpg"/>
+    <table style="width:740px; margin:auto; background-color:#F6F1DE; table-layout:auto; font-size:medium;" border="0" cellpadding="0" cellspacing="0" align="center">
+        <tr><td style="text-align:center;" colspan="4">
+            <img alt="Wine Library TV" src="$img_path/header.jpg"/>
         </td></tr>
         <tr>
+            <td style="width:10px;"></td>
             <td style="width:520px;" valign="top">
                 <table style="background-color:#F6F1DE; width:100%;" border="0" cellpadding="0" cellspacing="0">
                     <tr>
@@ -113,8 +116,8 @@ $creative = <<<EOF
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-family:'Lucida Grande',Verdana,sans-serif; line-height:1.5em; font-size:70%; color:#996633; padding:0px 0px 7px 0px;">
-                            <strong>$curr_date</strong>
+                        <td style="padding:0px 0px 7px 0px;">
+                            <strong style="font-family:'Lucida Grande',Verdana,sans-serif; line-height:1.5em; font-size:70%; color:#996633;">$curr_date</strong>
                         </td>
                     </tr>
                     <tr>
@@ -127,7 +130,7 @@ $creative = <<<EOF
                     </tr>
                     <tr>
                         <td>
-                            <table style="font-size:80%; color:#663300; font-family:'Lucida Grande',Verdana,sans-serif; background-color:#F6F1DE; width:100%;" border="0" cellpadding="0" cellspacing="0">
+                            <table style="font-size:80%; color:#663300; font-family:'Lucida Grande',Verdana,sans-serif; background-color:#F6F1DE; width:100%;" border="0" cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
                                     <td style="background-color:#F4E6C9; padding:7px 10px; border-color:#E0D0B1; border-style:solid; border-width:1px;">
                                         <strong>Wines tasted in this episode:</strong>
@@ -162,12 +165,12 @@ $creative .= <<<EOF
                                 </tr>
                                 <tr>
                                     <td style="background-color:#FBF8EB; padding:12px 5px; border-color:#E0D0B1; border-style:solid; border-width:0px 1px 1px 1px;">
-                                        <a style="text-decoration:none; color:#268CCD; font-weight:bold; font-size:95%; padding:15px 80px 10px 0px;" href="http://corkd.com/"><img src="images/corkdIcon.jpg" alt="" style="border:0px; padding:0px 8px 0px 5px; margin-right:5px;" />Cork'd</a>
+                                        <a style="text-decoration:none; color:#268CCD; font-weight:bold; font-size:95%; padding:15px 80px 10px 0px;" href="http://corkd.com/"><img src="$img_path/corkdIcon.jpg" alt="" style="border:0px; padding:0px 3px 0px 5px; margin-right:0px;" />&nbsp;&nbsp;&nbsp;Cork'd</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="background-color:#FBF8EB; padding:12px 5px; border-color:#E0D0B1; border-style:solid; border-width:0px 1px 1px 1px;">
-                                        <a style="text-decoration:none; color:#268CCD; font-weight:bold; font-size:95%; padding:15px 50px 10px 0px;" href="http://garyvaynerchuk.com/"><img src="images/gvIcon.jpg" alt="" style="border:0px; padding:4px 5px; margin-right:5px;" />Gary's Blog</a>
+                                        <a style="text-decoration:none; color:#268CCD; font-weight:bold; font-size:95%; padding:15px 50px 10px 0px;" href="http://garyvaynerchuk.com/"><img src="$img_path/gvIcon.jpg" alt="" style="border:0px; padding:4px 0px 4px 5px; margin-right:0px;" />&nbsp;&nbsp;&nbsp;Gary's Blog</a>
                                     </td>
                                 </tr>
                             </table>
@@ -198,9 +201,10 @@ $creative .= <<<EOF
                     </tr>
                 </table>
             </td>
+            <td style="width:10px;"></td>
         </tr>
         <tr>
-            <td colspan="2" style="font-size: 10px; color: gray; padding:50px 0px 10px 0px;">You received this email because you are subscribed to <a href="http://tv.winelibrary.com">Wine Library TV</a>. To unsubscribe, [~Optout~]Click Here[~EndOptout~]</td>
+            <td colspan="4" style="text-align:center; font-size: 10px; color: gray; padding:50px 0px 10px 0px;">You received this email because you are subscribed to <a href="http://tv.winelibrary.com">Wine Library TV</a>. To unsubscribe, [~Optout~]Click Here[~EndOptout~]</td>
         </tr>
     </table>
 </div>
@@ -221,7 +225,7 @@ $postString = "
 <FolderID>7</FolderID>
 <HTML>$email_content</HTML>
 <Name>WLTV " . date('m/j') . "</Name>
-<Subject>API Test</Subject>
+<Subject>$curr_title</Subject>
 <Text>
 You have received a HTML email from Wine Library TV, but it appears that your e-mail client is set to read messages in plain text.
 To view the original graphical version of the email in your Internet browser, visit:
@@ -248,17 +252,17 @@ if(preg_match('/<a:CreativeID.*a:CreativeID>/', $response, $id))
 $postString = "
 <CampaignDistribution xmlns=\"http://schemas.datacontract.org/2004/07/BlueSkyFactory.Publicaster7.API.REST.Classes\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">
 <CampaignDistributionID>0</CampaignDistributionID>
-<DistributionSubject>Test</DistributionSubject>
-<GoogleTitle>Test</GoogleTitle>
+<DistributionSubject>$curr_title</DistributionSubject>
+<GoogleTitle>$curr_title</GoogleTitle>
 <IsSegmentation>false</IsSegmentation>
 <IsSuppression>false</IsSuppression>
 <IsTest>false</IsTest>
 <ProcessGoogle>false</ProcessGoogle>
 <SelectedCampaign>6</SelectedCampaign>
 <SelectedEmail>$CreativeID</SelectedEmail>
-<SelectedFromAddress>11</SelectedFromAddress>
+<SelectedFromAddress>13</SelectedFromAddress>
 <SelectedMailingList>20</SelectedMailingList>
-<SelectedReplyToAddress>11</SelectedReplyToAddress>
+<SelectedReplyToAddress>13</SelectedReplyToAddress>
 <SendDate>".date('Y-m-d\TG:i:s')."</SendDate>
 <TrackLinks>true</TrackLinks>
 <UserID>2419</UserID>
@@ -268,4 +272,9 @@ $response = make_api_call('CampaignDistributions.svc',$postString);
 
 echo "<br />Sent";
 } else { echo "Up to date";}
+
+// Items to change before going live
+// Selected Campaign = 9
+// Selected Mailing List = 21
+
 ?>
