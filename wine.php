@@ -73,6 +73,7 @@ if(is_new_episode($rss->channel->item[0]->title) || true){
     }
     echo "hi";
     $rss = file_get_contents("http://feeds.feedburner.com/WinelibraryTv");
+    echo "hi";
     $xml = new DOMDocument();
     $xml->loadxml($rss);
     $wines = $xml->getElementsByTagName('item')->item(0)->getElementsByTagName('description')->item(0)->nextSibling->nextSibling->nodeValue;
