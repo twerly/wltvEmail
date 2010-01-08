@@ -71,7 +71,7 @@ if(is_new_episode($rss->channel->item[0]->title) || 1){
        }
     $rss_id++;
     }
-    echo "hi";
+
     $rss = file_get_contents("http://feeds.feedburner.com/WinelibraryTv");
     $xml = new DOMDocument();
     $xml->loadxml($rss);
@@ -80,6 +80,7 @@ if(is_new_episode($rss->channel->item[0]->title) || 1){
     $wines = substr($wines, 0, strpos($wines, "</table>"));
     //$wines = strip_tags($wines, "<th><a><em>");
     $wines = substr($wines, strpos($wines, "<th"));
+    echo $wines;
     $winelist = array();
     if($wines != ""){
         $xml->loadHTML($wines);
