@@ -1,5 +1,5 @@
 <?php
-$img_path = "http://localhost/wltvemail/images";
+$img_path = "http://wltv.vaynermedia.com/images";
 
 function is_new_episode($title){
     $db_host = "localhost";
