@@ -4,7 +4,7 @@ $img_path = "http://wltv.vaynermedia.com/images";
 function is_new_episode($title){
     $db_host = "localhost";
     $db_user = "root";
-    $db_pass = "";
+    $db_pass = "thrasher66";
     $db_name = "wltv";
     $connection = mysql_connect($db_host, $db_user, $db_pass) or die("Could not connect to database");
     mysql_select_db($db_name, $connection) or die ("Could not select database");
