@@ -4,7 +4,7 @@ $img_path = "http://wltv.vaynermedia.com/images";
 function is_new_episode($title){
     $db_host = "localhost";
     $db_user = "root";
-    $db_pass = "thrasher66";
+    $db_pass = "";
     $db_name = "wltv";
     $connection = mysql_connect($db_host, $db_user, $db_pass) or die("Could not connect to database");
     mysql_select_db($db_name, $connection) or die ("Could not select database");
@@ -74,7 +74,7 @@ if(is_new_episode($rss->channel->item[0]->title) || true){
     $rss = file_get_contents("http://feeds.feedburner.com/WinelibraryTv");
     $xml = new DOMDocument();
     $xml->loadxml($rss);
-    $wines = $xml->getElementsByTagName('item')->item(0)->getElementsByTagName('description')->item(0)->nextSibling->nextSibling->nodeValue;
+    $wines = $xml->getElementsByTagName('item')->item(1)->getElementsByTagName('description')->item(0)->nextSibling->nextSibling->nodeValue;
     $wines = substr($wines, strpos($wines, "<h3 class=\"wine-list\">Wines tasted in this episode"));
     $wines = substr($wines, 0, strpos($wines, "</table>"));
     //$wines = strip_tags($wines, "<th><a><em>");
