@@ -270,8 +270,8 @@ $postString = "
 ";
 $response = make_api_call('CampaignDistributions.svc',$postString);
 
-echo "<br />Sent";
-} else { echo "Up to date";}
+echo "<h2>Sent</h2>";
+} else { echo "<h2>Up to date</h2>";}
 
 // Items to change before going live
 // Selected Campaign = 9
