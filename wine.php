@@ -43,7 +43,7 @@ $rss_id = 1;
 
 // Set up the feed and grab the very first (i.e. most recent) episode info
 $episodes = array();
-if(is_new_episode($rss->channel->item[0]->title) || 1){
+if(is_new_episode($rss->channel->item[0]->title) || true){
     foreach ($rss->channel->item as $item) {
        if ($rss_id == 1) {
        //Grab the episode number from the rss'd title, y'all
@@ -71,11 +71,10 @@ if(is_new_episode($rss->channel->item[0]->title) || 1){
        }
     $rss_id++;
     }
-
+    echo "hi";
     $rss = file_get_contents("http://feeds.feedburner.com/WinelibraryTv");
     $xml = new DOMDocument();
     $xml->loadxml($rss);
-    echo "hi";
     $wines = $xml->getElementsByTagName('item')->item(0)->getElementsByTagName('description')->item(0)->nextSibling->nextSibling->nodeValue;
     $wines = substr($wines, strpos($wines, "<h3 class=\"wine-list\">Wines tasted in this episode"));
     $wines = substr($wines, 0, strpos($wines, "</table>"));
