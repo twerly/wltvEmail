@@ -46,7 +46,7 @@ $rss_id = 1;
 $episodes = array();
 if(is_new_episode($rss->channel->item[0]->title) || true){
     foreach ($rss->channel->item as $item) {
-       if ($rss_id == 2) {
+       if ($rss_id == 1) {
        //Grab the episode number from the rss'd title, y'all
        $tweet_boom = explode('#', $item->title);
        if (is_numeric($tweet_boom[1])) {
@@ -73,12 +73,9 @@ if(is_new_episode($rss->channel->item[0]->title) || true){
     $rss_id++;
     }
     $rss = file_get_contents("http://feeds.feedburner.com/WinelibraryTv");
-    echo "break 1";
     $xml = new DOMDocument();
-    echo "break 2";
     $xml->loadxml($rss);
-    echo "break 3";
-    $wines = $xml->getElementsByTagName('item')->item(1)->getElementsByTagName('description')->item(0)->nextSibling->nextSibling->nodeValue;
+    $wines = $xml->getElementsByTagName('item')->item(0)->getElementsByTagName('description')->item(0)->nextSibling->nextSibling->nodeValue;
     $wines = substr($wines, strpos($wines, "<h3 class=\"wine-list\">Wines tasted in this episode"));
     $wines = substr($wines, 0, strpos($wines, "</table>"));
     //$wines = strip_tags($wines, "<th><a><em>");
