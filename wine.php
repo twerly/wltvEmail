@@ -1,6 +1,5 @@
 <?php
-ini_set('display_errors','On');
-$img_path = "http://wltv.vaynermedia.com/images";
+$img_path = "http://wltv0.vaynermedia.com/images";
 
 function is_new_episode($title){
     $db_host = "localhost";
@@ -86,7 +85,7 @@ if(is_new_episode($rss->channel->item[0]->title)){
         foreach($xml->getElementsByTagName('th') as $wine){
             $name = $wine->getElementsByTagName('a')->item(0)->nodeValue;
             $link = $wine->getElementsByTagName('a')->item(0)->getAttributeNode('href')->nodeValue;
-            $region = $wine->getElementsByTagName('em')->item(0)->nodeValue;
+            //$region = $wine->getElementsByTagName('em')->item(0)->nodeValue;
             array_push($winelist, array("name"=>$name, "link"=>$link, "region"=>$region));
        }
     }
