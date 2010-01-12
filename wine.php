@@ -258,10 +258,10 @@ $postString = "
 <IsSuppression>false</IsSuppression>
 <IsTest>false</IsTest>
 <ProcessGoogle>false</ProcessGoogle>
-<SelectedCampaign>6</SelectedCampaign>
+<SelectedCampaign>9</SelectedCampaign>
 <SelectedEmail>$CreativeID</SelectedEmail>
 <SelectedFromAddress>13</SelectedFromAddress>
-<SelectedMailingList>20</SelectedMailingList>
+<SelectedMailingList>21</SelectedMailingList>
 <SelectedReplyToAddress>13</SelectedReplyToAddress>
 <SendDate>".date('Y-m-d\TG:i:s')."</SendDate>
 <TrackLinks>true</TrackLinks>
@@ -272,9 +272,5 @@ $response = make_api_call('CampaignDistributions.svc',$postString);
 
 echo "<h2>Sent</h2>";
 } else { echo "<h2>Up to date</h2>";}
-
-// Items to change before going live
-// Selected Campaign = 9
-// Selected Mailing List = 21
 
 ?>
