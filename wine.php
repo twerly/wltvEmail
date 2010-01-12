@@ -43,7 +43,7 @@ $rss_id = 1;
 
 // Set up the feed and grab the very first (i.e. most recent) episode info
 $episodes = array();
-if(is_new_episode($rss->channel->item[0]->title)){
+if(is_new_episode($rss->channel->item[0]->title) || true){
     foreach ($rss->channel->item as $item) {
        if ($rss_id == 1) {
        //Grab the episode number from the rss'd title, y'all
@@ -84,8 +84,9 @@ if(is_new_episode($rss->channel->item[0]->title)){
         $xml->loadHTML($wines);
         foreach($xml->getElementsByTagName('th') as $wine){
             $name = $wine->getElementsByTagName('a')->item(0)->nodeValue;
-            $link = $wine->getElementsByTagName('a')->item(0)->getAttributeNode('href')->nodeValue;
-            //$region = $wine->getElementsByTagName('em')->item(0)->nodeValue;
+            if($name == "") { $name = $wine->nodeValue; $link = "#"; }
+            else { $link = $wine->getElementsByTagName('a')->item(0)->getAttributeNode('href')->nodeValue; }
+            $region = $wine->getElementsByTagName('em')->item(0)->nodeValue;
             array_push($winelist, array("name"=>$name, "link"=>$link, "region"=>$region));
        }
     }
@@ -211,7 +212,7 @@ $creative .= <<<EOF
 </html>
 EOF;
 
-echo $creative;
+//echo $creative;
 
 $email_content = htmlspecialchars($creative);
 
