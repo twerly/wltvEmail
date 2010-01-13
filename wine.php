@@ -225,7 +225,7 @@ $postString = "
 <FolderID>7</FolderID>
 <HTML>$email_content</HTML>
 <Name>WLTV " . date('m/j') . "</Name>
-<Subject>$curr_title</Subject>
+<Subject>Wine Library TV - $curr_title</Subject>
 <Text>
 You have received a HTML email from Wine Library TV, but it appears that your e-mail client is set to read messages in plain text.
 To view the original graphical version of the email in your Internet browser, visit:
@@ -252,8 +252,8 @@ if(preg_match('/<a:CreativeID.*a:CreativeID>/', $response, $id))
 $postString = "
 <CampaignDistribution xmlns=\"http://schemas.datacontract.org/2004/07/BlueSkyFactory.Publicaster7.API.REST.Classes\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">
 <CampaignDistributionID>0</CampaignDistributionID>
-<DistributionSubject>$curr_title</DistributionSubject>
-<GoogleTitle>$curr_title</GoogleTitle>
+<DistributionSubject>Wine Library TV - $curr_title</DistributionSubject>
+<GoogleTitle>Wine Library TV - $curr_title</GoogleTitle>
 <IsSegmentation>false</IsSegmentation>
 <IsSuppression>false</IsSuppression>
 <IsTest>false</IsTest>
