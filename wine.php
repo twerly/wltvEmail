@@ -33,63 +33,71 @@ function make_api_call($service,$body) {
   $curl_response = curl_exec($curl);
   curl_close($curl);
 
+  // echo $body;
+  // print_r($curl_response);
+
   return $curl_response;
 }
 
 //Grab the WLTV RSS Feed
 $rss = simplexml_load_file('http://feeds.feedburner.com/WinelibraryTv');
 
-$rss_id = 1;
-
 // Set up the feed and grab the very first (i.e. most recent) episode info
 $episodes = array();
-if(is_new_episode($rss->channel->item[0]->title)){
-    foreach ($rss->channel->item as $item) {
-       if ($rss_id == 1) {
-       //Grab the episode number from the rss'd title, y'all
-       $tweet_boom = explode('#', $item->title);
-       if (is_numeric($tweet_boom[1])) {
-               $ep_img = 'http://tv.winelibrary.com/episodes/episode'.$tweet_boom[1].'.jpg';
-       } else {
-               $ep_img = 'http://tv.winelibrary.com/episodes/default.jpg';
-       }
-       $curr_title   =   $item->title;
-       $curr_url     =   $item->guid;
-       $curr_date = date( "F j, Y", strtotime($item->pubDate) );
-       $curr_description = substr($item->description, 0, strpos($item->description,"Having trouble"));
-       }
-       elseif($rss_id <= 4){
-       $tweet_boom = explode('#', $item->title);
-       if (is_numeric($tweet_boom[1])) {
-               $temp_img = 'http://tv.winelibrary.com/episodes/episode'.$tweet_boom[1].'.jpg';
-       } else {
-               $temp_img = 'http://tv.winelibrary.com/episodes/default.jpg';
-       }
-       $temp_title = $item->title;
-       $temp_url = $item->guid;
-       array_push($episodes, array("title"=>$temp_title, "img"=>$temp_img, "url"=>$temp_url));
-       }
-    $rss_id++;
+
+//ghetto, but u have to change this to send a different email than the first one
+$index = 0;
+
+if( !is_new_episode($rss->channel->item[$index]->title) ) die("<h2>Up to date</h2>");
+
+foreach ($rss->channel->item as $key => $item) {
+  if( $key == $index ) {
+    //Grab the episode number from the rss'd title, y'all
+    $tweet_boom = explode('#', $item->title);
+    if (is_numeric($tweet_boom[1])) {
+      $ep_img = 'http://tv.winelibrary.com/episodes/episode'.$tweet_boom[1].'.jpg';
+    } else {
+      $ep_img = 'http://tv.winelibrary.com/episodes/default.jpg';
     }
-    $rss = file_get_contents("http://feeds.feedburner.com/WinelibraryTv");
-    $xml = new DOMDocument();
-    $xml->loadxml($rss);
-    $wines = $xml->getElementsByTagName('item')->item(0)->getElementsByTagName('description')->item(0)->nextSibling->nextSibling->nodeValue;
-    $wines = substr($wines, strpos($wines, "<h3 class=\"wine-list\">Wines tasted in this episode"));
-    $wines = substr($wines, 0, strpos($wines, "</table>"));
-    //$wines = strip_tags($wines, "<th><a><em>");
-    $wines = substr($wines, strpos($wines, "<th"));
-    $winelist = array();
-    if($wines != ""){
-        $xml->loadHTML($wines);
-        foreach($xml->getElementsByTagName('th') as $wine){
-            $name = $wine->getElementsByTagName('a')->item(0)->nodeValue;
-            if($name == "") { $name = $wine->nodeValue; $link = "#"; }
-            else { $link = $wine->getElementsByTagName('a')->item(0)->getAttributeNode('href')->nodeValue; }
-            $region = $wine->getElementsByTagName('em')->item(0)->nodeValue;
-            array_push($winelist, array("name"=>$name, "link"=>$link, "region"=>$region));
-       }
+    $curr_title   =   $item->title;
+    $curr_url     =   $item->guid;
+    $curr_date = date( "F j, Y", strtotime($item->pubDate) );
+    $curr_description = substr($item->description, 0, strpos($item->description,"Having trouble"));
+  }
+  else if( $key <= 4 ){
+    $tweet_boom = explode('#', $item->title);
+    if (is_numeric($tweet_boom[1])) {
+            $temp_img = 'http://tv.winelibrary.com/episodes/episode'.$tweet_boom[1].'.jpg';
+    } else {
+            $temp_img = 'http://tv.winelibrary.com/episodes/default.jpg';
     }
+    $temp_title = $item->title;
+    $temp_url = $item->guid;
+    array_push($episodes, array("title"=>$temp_title, "img"=>$temp_img, "url"=>$temp_url));    
+  }
+}
+
+//getting wines
+$rss = file_get_contents("http://feeds.feedburner.com/WinelibraryTv");
+$xml = new DOMDocument();
+$xml->loadxml($rss);
+$wines = $xml->getElementsByTagName('item')->item(0)->getElementsByTagName('description')->item(0)->nextSibling->nextSibling->nodeValue;
+$wines = substr($wines, strpos($wines, "<h3 class=\"wine-list\">Wines tasted in this episode"));
+$wines = substr($wines, 0, strpos($wines, "</table>"));
+//$wines = strip_tags($wines, "<th><a><em>");
+$wines = substr($wines, strpos($wines, "<th"));
+$winelist = array();
+if($wines != ""){
+    $xml->loadHTML($wines);
+    foreach($xml->getElementsByTagName('th') as $wine){
+        $name = $wine->getElementsByTagName('a')->item(0)->nodeValue;
+        if($name == "") { $name = $wine->nodeValue; $link = "#"; }
+        else { $link = $wine->getElementsByTagName('a')->item(0)->getAttributeNode('href')->nodeValue; }
+        $region = $wine->getElementsByTagName('em')->item(0)->nodeValue;
+        array_push($winelist, array("name"=>$name, "link"=>$link, "region"=>$region));
+   }
+}  
+
 
 $creative = <<<EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -225,7 +233,7 @@ $postString = "
 <FolderID>7</FolderID>
 <HTML>$email_content</HTML>
 <Name>WLTV " . date('m/j') . "</Name>
-<Subject>Wine Library TV - $curr_title</Subject>
+<Subject>Wine Library TV - ".htmlspecialchars($curr_title)."</Subject>
 <Text>
 You have received a HTML email from Wine Library TV, but it appears that your e-mail client is set to read messages in plain text.
 To view the original graphical version of the email in your Internet browser, visit:
@@ -245,10 +253,12 @@ To forward this e-mail to a friend/colleague, visit:
 ";
 $response = make_api_call('Creatives.svc', $postString);
 
+
 // Grab the Creative ID for future use
 if(preg_match('/<a:CreativeID.*a:CreativeID>/', $response, $id))
     { $CreativeID = strip_tags($id[0]); }
 
+if( !$CreativeID ) die("Couldn't create the creative")
 $postString = "
 <CampaignDistribution xmlns=\"http://schemas.datacontract.org/2004/07/BlueSkyFactory.Publicaster7.API.REST.Classes\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">
 <CampaignDistributionID>0</CampaignDistributionID>
@@ -268,9 +278,8 @@ $postString = "
 <UserID>2419</UserID>
 </CampaignDistribution>
 ";
-$response = make_api_call('CampaignDistributions.svc',$postString);
+// $response = make_api_call('CampaignDistributions.svc',$postString);
 
 echo "<h2>Sent</h2>";
-} else { echo "<h2>Up to date</h2>";}
 
 ?>
